@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced SpeedTest</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #0a0f24;
+        color: #e0f7ff;
+        text-align: center;
+        padding: 30px;
+    }
+    h1 {
+        font-size: 50px;
+        margin-bottom: 10px;
+        color: #00eaff;
+    }
+    .box {
+        margin: 25px auto;
+        padding: 20px;
+        width: 350px;
+        background: #11182f;
+        border-radius: 12px;
+        box-shadow: 0 0 20px #00eaff20;
+    }
+    button {
+        padding: 15px 40px;
+        font-size: 20px;
+        border: none;
+        background: #00eaff;
+        color: #000;
+        border-radius: 10px;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+    .result {
+        font-size: 28px;
+        margin-top: 10px;
+    }
+</style>
+</head>
+<body>
+
+<h1>Network SpeedTest</h1>
+<div class="box">
+    <button onclick="startTest()">START TEST</button>
+    <p id="status"></p>
+
+    <div class="result" id="download"></div>
+    <div class="result" id="upload"></div>
+    <div class="result" id="ping"></div>
+    <div class="result" id="jitter"></div>
+</div>
+
+<script>
+async function startTest() {
+    document.getElementById("status").innerText = "Running tests...";
+    await pingTest();
+    await downloadTest();
+    await uploadTest();
+    document.getElementById("status").innerText = "Test complete ✔";
+}
+
+async function pingTest() {
+    let url = "https://speed.cloudflare.com/__down";
+    let times = [];
+    for (let i = 0; i < 5; i++) {
+        let start = performance.now();
+        await fetch(url);
+        let end = performance.now();
+        times.push(end - start);
+    }
+    let ping = Math.round(times[0]);
+    let jitter = Math.round(Math.max(...times) - Math.min(...times));
+
+    document.getElementById("ping").innerHTML = `Ping: <strong>${ping} ms</strong>`;
+    document.getElementById("jitter").innerHTML = `Jitter: <strong>${jitter} ms</strong>`;
+}
+
+async function downloadTest() {
+    let fileUrl = "https://speed.cloudflare.com/__down?bytes=50000000"; // 50MB
+    let start = performance.now();
+    let data = await fetch(fileUrl);
+    let blob = await data.blob();
+    let end = performance.now();
+
+    let duration = (end - start) / 1000;
+    let speed = ((blob.size * 8) / duration / 1024 / 1024).toFixed(2);
+    document.getElementById("download").innerHTML =
+        `Download: <strong>${speed} Mbps</strong>`;
+}
+
+async function uploadTest() {
+    let data = new Uint8Array(5 * 1024 * 1024); // 5MB random data
+    let start = performance.now();
+    await fetch("https://speed.cloudflare.com/__up", { method: "POST", body: data });
+    let end = performance.now();
+
+    let duration = (end - start) / 1000;
+    let speed = ((data.length * 8) / duration / 1024 / 1024).toFixed(2);
+    document.getElementById("upload").innerHTML =
+        `Upload: <strong>${speed} Mbps</strong>`;
+}
+</script>
+
+</body>
+</html>
