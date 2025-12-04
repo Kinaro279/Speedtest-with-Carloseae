@@ -1,76 +1,53 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Pro SpeedTest</title>
-
-<link rel="stylesheet" href="style.css">
-
-<!-- Chart.js from CDN -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
-
-<!-- App scripts -->
-<script src="gauge.js" defer></script>
-<script src="chart.js" defer></script>
-<script src="app.js" defer></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Real-time SpeedTest</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="topbar">
-  <div class="brand">
-    <strong>Pro</strong> SpeedTest
-  </div>
-  <div class="controls">
-    <button id="themeToggle" aria-label="Toggle theme">🌗</button>
-    <a class="small" href="#" id="docsLink" title="Docs">Docs</a>
-  </div>
-</header>
+  <header class="top">
+    <h1>Real-time SpeedTest</h1>
+    <div class="subtitle">Accurate network speed measurement — non-blocking, client-side</div>
+  </header>
 
-<main class="wrap">
-  <section class="panel left">
-    <div class="card gauge-card">
-      <div class="gauge-wrapper">
-        <!-- SVG gauge drawn/animated by gauge.js -->
-        <svg id="speedGauge" viewBox="0 0 360 240" class="gauge-svg" aria-hidden="false"></svg>
-        <div class="gauge-info">
-          <div class="big" id="downloadDisplay">— Mbps</div>
-          <div class="muted" id="statusText">Idle</div>
+  <main class="main">
+    <section class="left">
+      <div class="gauge">
+        <svg id="gaugeSvg" viewBox="0 0 360 220" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="centerText">
+          <div id="speedLabel" class="speedLabel">— Mbps</div>
+          <div id="status" class="status">Idle</div>
         </div>
       </div>
 
-      <div class="actions">
-        <button id="startBtn" class="primary">Start Test</button>
-        <button id="saveBtn" class="ghost" title="Save last result">Save</button>
+      <div class="controls">
+        <button id="startBtn" class="btn primary">Start Real Test</button>
+        <button id="stopBtn" class="btn" disabled>Stop</button>
+        <button id="fullBtn" class="btn">Run Full Test</button>
       </div>
 
       <div class="metrics">
-        <div class="metric"><span class="label">Upload</span><span id="uploadDisplay">— Mbps</span></div>
-        <div class="metric"><span class="label">Ping</span><span id="pingDisplay">— ms</span></div>
-        <div class="metric"><span class="label">Jitter</span><span id="jitterDisplay">— ms</span></div>
+        <div>Download: <span id="download">—</span> Mbps</div>
+        <div>Upload: <span id="upload">—</span> Mbps</div>
+        <div>Ping: <span id="ping">—</span> ms</div>
+        <div>Jitter: <span id="jitter">—</span> ms</div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="panel right">
-    <div class="card history-card">
-      <div class="card-header">
-        <h3>History</h3>
-        <div class="header-actions">
-          <button id="clearHistory" class="ghost">Clear</button>
-          <button id="exportHistory" class="ghost">Export</button>
-        </div>
+    <section class="right">
+      <h3>History (local)</h3>
+      <div id="historyList" class="historyList">No results yet</div>
+      <div class="historyButtons">
+        <button id="clearHistory" class="btn">Clear</button>
+        <button id="exportHistory" class="btn">Export</button>
       </div>
+    </section>
+  </main>
 
-      <canvas id="downloadChart" aria-label="Download speed chart"></canvas>
+  <footer class="footer">Test file source: Hetzner / Public file. For best accuracy host test files on a nearby CDN.</footer>
 
-      <div class="history-table" id="historyList" role="list" aria-label="Saved results"></div>
-    </div>
-  </section>
-</main>
-
-<footer class="footer">
-  <small>Works with GitHub Pages · Local history · No server required</small>
-</footer>
-
+  <script src="main.js" defer></script>
 </body>
 </html>
