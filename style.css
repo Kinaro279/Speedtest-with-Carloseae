@@ -1,65 +1,33 @@
-body {
-    background: linear-gradient(135deg, #001f3f, #003f7f);
-    font-family: Arial, sans-serif;
-    color: white;
-    text-align: center;
+:root{
+  --bg:#042034; --card:#07263c; --accent:#00eaff; --muted:#9fb5c6;
+  --glass: rgba(255,255,255,0.03);
 }
+*{box-sizing:border-box}
+html,body{height:100%; margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,Arial}
+body{background: linear-gradient(180deg,var(--bg), #021422); color:var(--muted)}
+.top{padding:18px; text-align:center}
+.top h1{margin:0;color:var(--accent)}
+.subtitle{font-size:0.95rem; margin-top:6px; color: #bcdbe6}
 
-.container {
-    width: 90%;
-    max-width: 400px;
-    margin: auto;
-    padding-top: 40px;
-}
+.main{display:flex; gap:20px; max-width:1100px; margin:18px auto; padding:10px}
+@media (max-width:900px){ .main{flex-direction:column} }
 
-.gauge {
-    width: 250px;
-    height: 250px;
-    border-radius: 50%;
-    background: #0a0a0a;
-    margin: 20px auto;
-    position: relative;
-    box-shadow: 0 0 20px cyan;
-}
+.left{flex:1; display:flex; flex-direction:column; align-items:center}
+.right{width:320px; min-width:260px}
 
-.needle {
-    width: 4px;
-    height: 120px;
-    background: red;
-    position: absolute;
-    left: 50%;
-    top: 30px;
-    transform-origin: bottom;
-    transform: rotate(-90deg);
-    transition: 0.5s ease-out;
-}
+.gauge{width:420px; max-width:100%; position:relative; background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent); border-radius:14px; padding:18px; box-shadow: 0 10px 30px rgba(0,0,0,0.45)}
+.centerText{position:absolute; left:0; right:0; top:38%; text-align:center}
+.speedLabel{font-size:32px; color:var(--accent); font-weight:700}
+.status{font-size:18px; margin-top:6px}
 
-.center {
-    width: 20px;
-    height: 20px;
-    background: white;
-    border-radius: 50%;
-    position: absolute;
-    top: 115px;
-    left: 115px;
-}
+.controls{display:flex; gap:10px; margin-top:16px}
+.btn{padding:10px 14px; border-radius:10px; border:none; cursor:pointer; background:#0b2c3a; color:var(--muted)}
+.btn.primary{background:var(--accent); color:#001}
 
-button {
-    padding: 12px 20px;
-    font-size: 18px;
-    background: cyan;
-    color: black;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-}
+.metrics{margin-top:14px; display:flex; gap:18px; flex-wrap:wrap; justify-content:center; color:var(--muted)}
 
-.results {
-    margin: 20px 0;
-}
+.historyList{background:var(--card); padding:10px; border-radius:8px; max-height:320px; overflow:auto; color:var(--muted)}
+.historyRow{display:flex;justify-content:space-between;padding:8px;border-bottom:1px solid rgba(255,255,255,0.02)}
+.historyButtons{display:flex; gap:8px; margin-top:8px}
 
-#history {
-    text-align: left;
-    padding: 0;
-    list-style: none;
-}
+.footer{text-align:center;margin:18px;color:#6fa2b8;font-size:0.9rem}
