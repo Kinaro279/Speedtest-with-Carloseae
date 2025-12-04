@@ -1,0 +1,65 @@
+body {
+    background: linear-gradient(135deg, #001f3f, #003f7f);
+    font-family: Arial, sans-serif;
+    color: white;
+    text-align: center;
+}
+
+.container {
+    width: 90%;
+    max-width: 400px;
+    margin: auto;
+    padding-top: 40px;
+}
+
+.gauge {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: #0a0a0a;
+    margin: 20px auto;
+    position: relative;
+    box-shadow: 0 0 20px cyan;
+}
+
+.needle {
+    width: 4px;
+    height: 120px;
+    background: red;
+    position: absolute;
+    left: 50%;
+    top: 30px;
+    transform-origin: bottom;
+    transform: rotate(-90deg);
+    transition: 0.5s ease-out;
+}
+
+.center {
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 115px;
+    left: 115px;
+}
+
+button {
+    padding: 12px 20px;
+    font-size: 18px;
+    background: cyan;
+    color: black;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.results {
+    margin: 20px 0;
+}
+
+#history {
+    text-align: left;
+    padding: 0;
+    list-style: none;
+}
