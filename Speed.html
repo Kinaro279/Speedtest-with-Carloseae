@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpeedTest by Kinaro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Internet Speed Test</h1>
+
+    <div class="gauge">
+        <div class="needle" id="needle"></div>
+        <div class="center"></div>
+    </div>
+
+    <div class="results">
+        <p><strong>Download:</strong> <span id="download">0</span> Mbps</p>
+        <p><strong>Upload:</strong> <span id="upload">0</span> Mbps</p>
+        <p><strong>Ping:</strong> <span id="ping">0</span> ms</p>
+    </div>
+
+    <button id="startBtn">Start Test</button>
+
+    <h2>History</h2>
+    <ul id="history"></ul>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
