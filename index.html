@@ -1,109 +1,76 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Advanced SpeedTest</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #0a0f24;
-        color: #e0f7ff;
-        text-align: center;
-        padding: 30px;
-    }
-    h1 {
-        font-size: 50px;
-        margin-bottom: 10px;
-        color: #00eaff;
-    }
-    .box {
-        margin: 25px auto;
-        padding: 20px;
-        width: 350px;
-        background: #11182f;
-        border-radius: 12px;
-        box-shadow: 0 0 20px #00eaff20;
-    }
-    button {
-        padding: 15px 40px;
-        font-size: 20px;
-        border: none;
-        background: #00eaff;
-        color: #000;
-        border-radius: 10px;
-        cursor: pointer;
-        margin-top: 20px;
-    }
-    .result {
-        font-size: 28px;
-        margin-top: 10px;
-    }
-</style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Pro SpeedTest</title>
+
+<link rel="stylesheet" href="style.css">
+
+<!-- Chart.js from CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+
+<!-- App scripts -->
+<script src="gauge.js" defer></script>
+<script src="chart.js" defer></script>
+<script src="app.js" defer></script>
 </head>
 <body>
+<header class="topbar">
+  <div class="brand">
+    <strong>Pro</strong> SpeedTest
+  </div>
+  <div class="controls">
+    <button id="themeToggle" aria-label="Toggle theme">🌗</button>
+    <a class="small" href="#" id="docsLink" title="Docs">Docs</a>
+  </div>
+</header>
 
-<h1>Network SpeedTest</h1>
-<div class="box">
-    <button onclick="startTest()">START TEST</button>
-    <p id="status"></p>
+<main class="wrap">
+  <section class="panel left">
+    <div class="card gauge-card">
+      <div class="gauge-wrapper">
+        <!-- SVG gauge drawn/animated by gauge.js -->
+        <svg id="speedGauge" viewBox="0 0 360 240" class="gauge-svg" aria-hidden="false"></svg>
+        <div class="gauge-info">
+          <div class="big" id="downloadDisplay">— Mbps</div>
+          <div class="muted" id="statusText">Idle</div>
+        </div>
+      </div>
 
-    <div class="result" id="download"></div>
-    <div class="result" id="upload"></div>
-    <div class="result" id="ping"></div>
-    <div class="result" id="jitter"></div>
-</div>
+      <div class="actions">
+        <button id="startBtn" class="primary">Start Test</button>
+        <button id="saveBtn" class="ghost" title="Save last result">Save</button>
+      </div>
 
-<script>
-async function startTest() {
-    document.getElementById("status").innerText = "Running tests...";
-    await pingTest();
-    await downloadTest();
-    await uploadTest();
-    document.getElementById("status").innerText = "Test complete ✔";
-}
+      <div class="metrics">
+        <div class="metric"><span class="label">Upload</span><span id="uploadDisplay">— Mbps</span></div>
+        <div class="metric"><span class="label">Ping</span><span id="pingDisplay">— ms</span></div>
+        <div class="metric"><span class="label">Jitter</span><span id="jitterDisplay">— ms</span></div>
+      </div>
+    </div>
+  </section>
 
-async function pingTest() {
-    let url = "https://speed.cloudflare.com/__down";
-    let times = [];
-    for (let i = 0; i < 5; i++) {
-        let start = performance.now();
-        await fetch(url);
-        let end = performance.now();
-        times.push(end - start);
-    }
-    let ping = Math.round(times[0]);
-    let jitter = Math.round(Math.max(...times) - Math.min(...times));
+  <section class="panel right">
+    <div class="card history-card">
+      <div class="card-header">
+        <h3>History</h3>
+        <div class="header-actions">
+          <button id="clearHistory" class="ghost">Clear</button>
+          <button id="exportHistory" class="ghost">Export</button>
+        </div>
+      </div>
 
-    document.getElementById("ping").innerHTML = `Ping: <strong>${ping} ms</strong>`;
-    document.getElementById("jitter").innerHTML = `Jitter: <strong>${jitter} ms</strong>`;
-}
+      <canvas id="downloadChart" aria-label="Download speed chart"></canvas>
 
-async function downloadTest() {
-    let fileUrl = "https://speed.cloudflare.com/__down?bytes=50000000"; // 50MB
-    let start = performance.now();
-    let data = await fetch(fileUrl);
-    let blob = await data.blob();
-    let end = performance.now();
+      <div class="history-table" id="historyList" role="list" aria-label="Saved results"></div>
+    </div>
+  </section>
+</main>
 
-    let duration = (end - start) / 1000;
-    let speed = ((blob.size * 8) / duration / 1024 / 1024).toFixed(2);
-    document.getElementById("download").innerHTML =
-        `Download: <strong>${speed} Mbps</strong>`;
-}
-
-async function uploadTest() {
-    let data = new Uint8Array(5 * 1024 * 1024); // 5MB random data
-    let start = performance.now();
-    await fetch("https://speed.cloudflare.com/__up", { method: "POST", body: data });
-    let end = performance.now();
-
-    let duration = (end - start) / 1000;
-    let speed = ((data.length * 8) / duration / 1024 / 1024).toFixed(2);
-    document.getElementById("upload").innerHTML =
-        `Upload: <strong>${speed} Mbps</strong>`;
-}
-</script>
+<footer class="footer">
+  <small>Works with GitHub Pages · Local history · No server required</small>
+</footer>
 
 </body>
 </html>
